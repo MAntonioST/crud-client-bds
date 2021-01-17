@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.client.crudbds.dto.ClientDTO;
 import com.client.crudbds.entities.Client;
 import com.client.crudbds.repositories.ClientRepository;
@@ -34,6 +33,23 @@ public class ClientService {
 		Optional<Client> obj = repository.findById(id);
 		Client entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 		return new ClientDTO(entity);
+	}
+
+	public ClientDTO insert(ClientDTO dto) {
+		Client entity = new Client();
+		convertDtoToEntity(dto, entity);
+		entity = repository.save(entity);
+		return new ClientDTO(entity);
+		
+		
+	}
+
+	private void convertDtoToEntity(ClientDTO dto, Client entity) {		
+		entity.setName(dto.getName());
+		entity.setCpf(dto.getCpf());
+		entity.setIncome(dto.getIncome());
+		entity.setBirthDate(dto.getBirthDate());
+		entity.setChildren(dto.getChildren());
 	}
 	
 	
